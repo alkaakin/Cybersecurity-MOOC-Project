@@ -1,0 +1,9 @@
+<h1>Entries</h1>
+<ul>
+  {% for entry in entries %}
+    <li>{{ entry.title }} by {{ entry.owner }}</li>
+    <li>{{ entry.content }}</li>
+  {% empty %}
+    <li>No entries yet.</li>
+  {% endfor %}
+</ul>
