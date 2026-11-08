@@ -1,8 +1,18 @@
+<form action="{% url 'add' %}" method="post">
+  {% csrf_token %}
+  <label for="title">Title</label><br>
+  <input type="text" id="title" name="title"><br>
+
+  <label for="content">Content</label><br>
+  <textarea id="content" name="content" rows="4" cols="40"></textarea><br>
+
+  <button type="submit">Add</button>
+</form>
+
 <h1>Entries</h1>
 <ul>
   {% for entry in entries %}
-    <li><a href="{% url 'detail' entry.id %}">{{ entry.title }}</a> by {{ entry.owner }}</li>
-    <li>{{ entry.content }}</li>
+    <li><a href="{% url 'detail' entry.id %}">{{ entry.title }}</a> by {{ entry.owner|linebreaksbr }}</li>
   {% empty %}
     <li>No entries yet.</li>
   {% endfor %}
