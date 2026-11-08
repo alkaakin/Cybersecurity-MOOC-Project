@@ -1,0 +1,9 @@
+<h1>{{ entry.title }}</h1>
+<ul>
+    <li>Owner: {{ entry.owner|linebreaksbr }}</li>
+    <li>Content: {{ entry.content|linebreaksbr }}</li>
+    <li>Created At: {{ entry.created_at|linebreaksbr }}</li>
+</ul>
+
+<a href="{% url 'home' %}">Back to list</a>
+
