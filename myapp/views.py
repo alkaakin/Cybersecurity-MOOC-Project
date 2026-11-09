@@ -15,9 +15,9 @@ def homePageView(request):
 def detail(request, entry_id):
     try:
         # FLAW 1: Broken Access Control (OWASP A01:2021)
-        # entry = Entry.objects.get(pk=entry_id)
+        entry = Entry.objects.get(pk=entry_id)
         # FIX: Replace the above line with 
-        entry = Entry.objects.get(pk=entry_id, owner=request.user)  
+        # entry = Entry.objects.get(pk=entry_id, owner=request.user)  
     except Entry.DoesNotExist:
         raise Http404("Entry does not exist")
     return render(request, 'myapp/detail.html', {'entry': entry})
