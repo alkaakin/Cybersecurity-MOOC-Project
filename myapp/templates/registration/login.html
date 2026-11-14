@@ -6,7 +6,6 @@
   </form>
 {% else %}
   <ul>
-    <li><a href="{% url 'login' %}">Log in</a></li>
     <li><a href="{% url 'register' %}">New user? Register</a></li>
   </ul>
 {% endif %}
@@ -18,3 +17,14 @@
   {{ form.as_p }}
   <button type="submit">Log in</button>
 </form>
+
+<label>
+  <input type="checkbox" id="show-password"> Show password
+</label>
+
+<script>
+  document.getElementById('show-password').addEventListener('change', function () {
+    const type = this.checked ? 'text' : 'password';
+    document.getElementById('id_password').type = type;
+  });
+</script>

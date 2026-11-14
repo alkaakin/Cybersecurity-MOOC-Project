@@ -4,10 +4,26 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
+# from django.contrib.auth.signals import user_login_failed
+# from django.dispatch import receiver
+import logging
 
 
 from .models import Entry
 
+logger = logging.getLogger(__name__)
+
+#FLAW 5: Security Logging and Monitoring Failures (OWASP A09:2021)
+# The flaw is to not failed log in attempts, which can be exploited by attackers to brute-force passwords without being detected.
+# FIX: Add a simple signal receiver to log these attempts. Comment out the following code to fix the flaw, and also comment out the needed imports.
+
+# @receiver(user_login_failed)
+# def log_login_failed(sender, credentials, request, **kwargs):
+    # logger.warning(
+        # "Login failed for user: %s from IP: %s",
+        # credentials.get('username') or 'unknown user',
+        # request.META.get('REMOTE_ADDR', 'unknown IP address'),
+    # )
 
 @login_required
 def homePageView(request):
@@ -36,7 +52,7 @@ def add_entry(request):
         new_entry.save()
         return redirect('home') 
     else:
-        return redirect('home')  # Redirect to home if not a POST request
+        return redirect('home')  
 
 @login_required
 def search(request):
