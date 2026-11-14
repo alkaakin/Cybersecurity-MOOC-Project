@@ -4,8 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
-# from django.contrib.auth.signals import user_login_failed
-# from django.dispatch import receiver
+from django.contrib.auth.signals import user_login_failed
+from django.dispatch import receiver
 import logging
 
 
@@ -19,10 +19,14 @@ logger = logging.getLogger(__name__)
 
 # @receiver(user_login_failed)
 # def log_login_failed(sender, credentials, request, **kwargs):
+    # if request:
+        # ip = request.META.get('REMOTE_ADDR', 'unknown IP address')
+    # else:
+        # ip = 'unknown IP address'
     # logger.warning(
         # "Login failed for user: %s from IP: %s",
         # credentials.get('username') or 'unknown user',
-        # request.META.get('REMOTE_ADDR', 'unknown IP address'),
+        # ip,
     # )
 
 @login_required
@@ -85,11 +89,11 @@ def register(request):
         return redirect('login') 
 
         #FIX: Ensure that the form is valid before saving the user, replace everything from the FLAW 4 comment down to return redirect('login') with the following:
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('login')
+        #if form.is_valid():
+            #form.save()
+            #username = form.cleaned_data.get('username')
+            #messages.success(request, f'Account created for {username}!')
+            #return redirect('login')
     else:
         form = UserCreationForm()  
     return render(request, 'registration/register.html', {'form': form})
