@@ -4,8 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
-from django.contrib.auth.signals import user_login_failed
-from django.dispatch import receiver
+# from django.contrib.auth.signals import user_login_failed
+# from django.dispatch import receiver
 import logging
 
 
