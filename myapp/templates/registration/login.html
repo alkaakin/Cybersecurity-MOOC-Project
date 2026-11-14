@@ -5,8 +5,12 @@
     <button type="submit">Log out</button>
   </form>
 {% else %}
-  <a href="{% url 'login' %}">Log in</a>
+  <ul>
+    <li><a href="{% url 'login' %}">Log in</a></li>
+    <li><a href="{% url 'register' %}">New user? Register</a></li>
+  </ul>
 {% endif %}
+
 
 <h1>Log in</h1>
 <form method="post">

@@ -27,3 +27,10 @@
     <li>No entries yet.</li>
   {% endfor %}
 </ul>
+
+<form action="{% url 'search' %}" method="get">
+  <label for="q">Search for entries:</label><br>
+  <input type="text" id="q" name="q"><br>
+  <button type="submit">Search</button>
+</form>
+
