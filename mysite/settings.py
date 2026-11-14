@@ -104,7 +104,8 @@ AUTH_PASSWORD_VALIDATORS = [
 PASSWORD_HASHERS = [
     # FLAW 2: Weak Password Hashing (OWASP A02:2021)
     "django.contrib.auth.hashers.MD5PasswordHasher",  
-    # FIX: comment out the line above, so that only strong hashers are used
+    # FIX: comment out the line above, so that strong hashers are always prioritized. 
+    # MD5 stays in the list for backward compatibility, but it will not be used for new passwords.
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.Argon2PasswordHasher",
