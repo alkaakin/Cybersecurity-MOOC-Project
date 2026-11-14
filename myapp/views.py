@@ -14,8 +14,8 @@ from .models import Entry
 logger = logging.getLogger(__name__)
 
 #FLAW 5: Security Logging and Monitoring Failures (OWASP A09:2021)
-# The flaw is to not failed log in attempts, which can be exploited by attackers to brute-force passwords without being detected.
-# FIX: Add a simple signal receiver to log these attempts. Comment out the following code to fix the flaw, and also comment out the needed imports.
+# The flaw is to not log failed login attempts, which can be exploited by attackers to brute-force passwords without being detected.
+# FIX: Add a simple signal receiver to log these attempts. Uncomment the following code to fix the flaw, and also uncomment the needed imports.
 
 # @receiver(user_login_failed)
 # def log_login_failed(sender, credentials, request, **kwargs):
@@ -27,7 +27,6 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def homePageView(request):
-    # Intended to only show entries for the logged-in user
     fetched_entries = Entry.objects.filter(owner=request.user).order_by('-created_at')
     return render(request, 'myapp/index.html', {'entries': fetched_entries})
 
@@ -84,12 +83,13 @@ def register(request):
             return redirect('register')
         User.objects.create_user(username=username, password=password1)
         return redirect('login') 
-        # FIX: Ensure that the form is valid before saving the user, replace everything from the FLAW 4 comment down to return redirect('login') with the following:
-        # if form.is_valid():
-            # form.save()
-            # username = form.cleaned_data.get('username')
-            # messages.success(request, f'Account created for {username}!')
-            # return redirect('login')
+
+        #FIX: Ensure that the form is valid before saving the user, replace everything from the FLAW 4 comment down to return redirect('login') with the following:
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('login')
     else:
         form = UserCreationForm()  
     return render(request, 'registration/register.html', {'form': form})
