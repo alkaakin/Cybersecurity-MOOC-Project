@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import Http404
 from django.shortcuts import redirect, render
+from django.contrib.auth.models import User
+
 
 from .models import Entry
 
@@ -51,11 +53,27 @@ def search(request):
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('login')  # Redirect to login page after successful registration
+        # FLAW 4: Identification and Authentication Failures (OWASP A07:2021)
+        username = request.POST.get('username', '')
+        password1 = request.POST.get('password1', '')
+        password2 = request.POST.get('password2', '')
+        if username == '' or password1 == '' or password2 == '':
+            messages.error(request, "All fields are required.")
+            return redirect('register')
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists.")
+            return redirect('register')
+        if password1 != password2:
+            messages.error(request, "Passwords do not match.")
+            return redirect('register')
+        User.objects.create_user(username=username, password=password1)
+        return redirect('login') 
+        # FIX: Ensure that the form is valid before saving the user, replace everything from the FLAW 4 comment down to return redirect('login') with the following:
+        # if form.is_valid():
+            # form.save()
+            # username = form.cleaned_data.get('username')
+            # messages.success(request, f'Account created for {username}!')
+            # return redirect('login')
     else:
-        form = UserCreationForm()
+        form = UserCreationForm()  
     return render(request, 'registration/register.html', {'form': form})
